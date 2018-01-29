@@ -10,43 +10,43 @@ import string
 import glob
 
 
-
-
-for letra in list(string.ascii_lowercase):
+for number in range(0, 4):
     
-    for fuente in glob.glob("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/*.pil"):
+    for letra in list(string.ascii_lowercase):
         
-        fuenteB = fuente.split("\\")[1]
-    
-        im = Image.new("RGBA",(28,28))
+        for fuente in glob.glob("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/*.pil"):
+            
+            fuenteB = fuente.split("\\")[1]
         
-        draw = ImageDraw.Draw(im)
+            im = Image.new("RGBA",(28,28))
+            
+            draw = ImageDraw.Draw(im)
+            
+            # use a bitmap font
+            font = ImageFont.load("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/" + fuenteB)
+            
+            draw.text((5, 5), letra , font=font, lign="center")
+            
+            # use a truetype font
+            draw = ImageDraw.Draw(im)
+            im.save("letras_fuente/" + letra + number + "_" + fuenteB + ".png")
         
-        # use a bitmap font
-        font = ImageFont.load("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/" + fuenteB)
+    for letra in list(string.ascii_uppercase):
         
-        draw.text((5, 5), letra , font=font, lign="center")
+        for fuente in glob.glob("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/*.pil"):
+            
+            fuenteB = fuente.split("\\")[1]
         
-        # use a truetype font
-        draw = ImageDraw.Draw(im)
-        im.save("letras_fuente/" + letra + "_" + fuenteB + ".png")
-    
-for letra in list(string.ascii_uppercase):
-    
-    for fuente in glob.glob("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/*.pil"):
+            im = Image.new("RGBA",(28,28))
+            
+            draw = ImageDraw.Draw(im)
+            
+            # use a bitmap font
+            font = ImageFont.load("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/" + fuenteB)
+            
+            draw.text((5, 5), letra , font=font, lign="center")
+            
+            # use a truetype font
+            draw = ImageDraw.Draw(im)
+            im.save("letras_fuente/" + letra + number + "_UPPER_" + fuenteB + ".png")
         
-        fuenteB = fuente.split("\\")[1]
-    
-        im = Image.new("RGBA",(28,28))
-        
-        draw = ImageDraw.Draw(im)
-        
-        # use a bitmap font
-        font = ImageFont.load("C:/Users/Barbassss/Documents/GitHub/TFG_OliverDiazAlejo_Javier/SOURCE/pilfonts/" + fuenteB)
-        
-        draw.text((5, 5), letra , font=font, lign="center")
-        
-        # use a truetype font
-        draw = ImageDraw.Draw(im)
-        im.save("letras_fuente/" + letra + "_UPPER_" + fuenteB + ".png")
-    
