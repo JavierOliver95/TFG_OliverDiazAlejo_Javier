@@ -6,11 +6,12 @@ from PIL import Image
 from PIL import ImageDraw
 import sys
 import string
+import os
 
 import glob
 
 
-for number in range(0, 4):
+for number in range(0, 7):
     
     for letra in list(string.ascii_lowercase):
         
@@ -29,7 +30,16 @@ for number in range(0, 4):
             
             # use a truetype font
             draw = ImageDraw.Draw(im)
-            im.save("letras_fuente/" + letra + number + "_" + fuenteB + ".png")
+            if number >= 5:
+                path="letras_fuente/" + letra + "/validation"
+            else:
+                path= "letras_fuente/" + letra + "/train"
+                
+            if not os.path.exists(path):
+                if not os.path.exists("letras_fuente/" + letra):
+                    os.mkdir("letras_fuente/" + letra)
+                os.mkdir(path)
+            im.save(path+"/" + str(number) + "_" + fuenteB + ".png")
         
     for letra in list(string.ascii_uppercase):
         
@@ -48,5 +58,14 @@ for number in range(0, 4):
             
             # use a truetype font
             draw = ImageDraw.Draw(im)
-            im.save("letras_fuente/" + letra + number + "_UPPER_" + fuenteB + ".png")
+            if number >= 5:
+                path="letras_fuente/" + letra + "_UPPER_" + "/validation"
+            else:
+                path= "letras_fuente/" + letra + "_UPPER_" + "/train"
+                
+            if not os.path.exists(path):
+                if not os.path.exists("letras_fuente/" + letra + "_UPPER_"):
+                    os.mkdir("letras_fuente/" + letra + "_UPPER_")
+                os.mkdir(path)
+            im.save(path + "/"+ str(number) + "_" + fuenteB + ".png")
         
