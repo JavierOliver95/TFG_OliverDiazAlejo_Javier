@@ -4,11 +4,12 @@ Created on Mon Nov 20 17:54:02 2017
 
 @author: JAVIER OLIVER ASUS
 """
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
-
+import GenerarFuentes
+from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Input, Dense, Lambda, Layer
 from keras.models import Model
 from keras import backend as K
@@ -21,6 +22,9 @@ latent_dim = 2
 intermediate_dim = 256
 epochs = 50
 epsilon_std = 1.0
+img_width, img_height = 28, 28
+train_data_dir = 'letras_fuente/a/train'
+validation_data_dir = 'letras_fuente/a/validation'
 
 
 x = Input(shape=(original_dim,))
@@ -43,7 +47,6 @@ decoder_h = Dense(intermediate_dim, activation='relu')
 decoder_mean = Dense(original_dim, activation='sigmoid')
 h_decoded = decoder_h(z)
 x_decoded_mean = decoder_mean(h_decoded)
-
 
 # Custom loss layer
 class CustomVariationalLayer(Layer):
@@ -69,24 +72,49 @@ vae = Model(x, y)
 vae.compile(optimizer='rmsprop', loss=None)
 
 
-# train the VAE on MNIST digits
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+dataset = GenerarFuentes.DatasetLetters()
+
+"""
+dataset.generate_data()
+#load data from our dataset
+
+
+x_train, y_train, x_test, y_test =dataset.load_data(folder="letras_fuente/a/")
 
 x_train = x_train.astype('float32') / 255.
 x_test = x_test.astype('float32') / 255.
-
-print("-----------------------------")
-print( np.prod(x_train.shape[1:]))
-x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
-x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
-
-
+x_train = x_train.reshape((len(x_train), 784))
+x_test = x_test.reshape((len(x_test), 784))
 """
+
+train_datagen = ImageDataGenerator(
+    rescale=1. / 255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True)
+
+# this is the augmentation configuration we will use for testing:
+# only rescaling
+test_datagen = ImageDataGenerator(rescale=1. / 255)
+
+x_train = train_datagen.flow_from_directory(
+    train_data_dir,
+    target_size=(img_width, img_height),
+    batch_size=batch_size,
+    class_mode='binary')
+
+x_test = test_datagen.flow_from_directory(
+    validation_data_dir,
+    target_size=(img_width, img_height),
+    batch_size=batch_size,
+    class_mode='binary')
+
+
 vae.fit(x_train,
         shuffle=True,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=(x_test, None))
+        validation_data=x_test)
 
 # build a model to project inputs on the latent space
 encoder = Model(x, z_mean)
@@ -108,7 +136,8 @@ figure = np.zeros((digit_size * n, digit_size * n))
 # to produce values of the latent variables z, since the prior of the latent space is Gaussian
 grid_x = norm.ppf(np.linspace(0.05, 0.95, n))
 grid_y = norm.ppf(np.linspace(0.05, 0.95, n))
-"""
+
+
 
 
 

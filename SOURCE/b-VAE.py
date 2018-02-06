@@ -74,14 +74,9 @@ vae.compile(optimizer='rmsprop', loss=None)
 
 x_train = x_train.astype('float32') / 255.
 x_test = x_test.astype('float32') / 255.
-
-print("-----------------------------")
-print( np.prod(x_train.shape[1:]))
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
 x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 
-
-"""
 vae.fit(x_train,
         shuffle=True,
         epochs=epochs,
@@ -108,7 +103,7 @@ figure = np.zeros((digit_size * n, digit_size * n))
 # to produce values of the latent variables z, since the prior of the latent space is Gaussian
 grid_x = norm.ppf(np.linspace(0.05, 0.95, n))
 grid_y = norm.ppf(np.linspace(0.05, 0.95, n))
-"""
+
 
 
 
