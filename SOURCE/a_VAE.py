@@ -74,19 +74,22 @@ vae.compile(optimizer='rmsprop', loss=None)
 
 dataset = GenerarFuentes.DatasetLetters()
 
-"""
-dataset.generate_data()
+
+#dataset.generate_data() 
+
 #load data from our dataset
 
 
 x_train, y_train, x_test, y_test =dataset.load_data(folder="letras_fuente/a/")
 
+
+
 x_train = x_train.astype('float32') / 255.
 x_test = x_test.astype('float32') / 255.
-x_train = x_train.reshape((len(x_train), 784))
-x_test = x_test.reshape((len(x_test), 784))
-"""
+x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
+x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 
+"""
 train_datagen = ImageDataGenerator(
     rescale=1. / 255,
     shear_range=0.2,
@@ -108,13 +111,13 @@ x_test = test_datagen.flow_from_directory(
     target_size=(img_width, img_height),
     batch_size=batch_size,
     class_mode='binary')
-
+"""
 
 vae.fit(x_train,
         shuffle=True,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=x_test)
+        validation_data=(x_test,None))
 
 # build a model to project inputs on the latent space
 encoder = Model(x, z_mean)

@@ -82,12 +82,11 @@ class DatasetLetters:
                     if not os.path.exists(path):
                         if not os.path.exists("letras_fuente/" + letra):
                             os.mkdir("letras_fuente/" + letra)
-                            os.mkdir("letras_fuente/" + letra  +"/validation")
-                            os.mkdir("letras_fuente/" + letra  +"/train")
-                    if number >=5:
-                        im.save(path+"/validation/" + str(i) +"_" + str(number) + ".png")
-                    else:
-                        im.save(path+"/train/" + str(i) +"_" + str(number) + ".png")
+                            
+                    
+                    im.save(path+"/" + str(i) +"_" + str(number) + ".png")
+                    
+                    
                         
                     
                 
@@ -130,23 +129,23 @@ class DatasetLetters:
             
             DIR = folder
             data_count = len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
+            train_count = int(data_count * train_percent)
+            
             for j in range(0,7):
-                train_count = int(data_count * train_percent)
-    			
     			# Get unique selection for each images.
                 random_selection = random.sample(range(round(data_count/7)), round(data_count/7))
-    
+                
                 for i in random_selection:
                     path = folder + str(i) + "_" + str(j) +".png"
-                    img = misc.imread(path) # / 255
+                    img = misc.imread(path, mode="L") # / 255
                     if train_count > 0:
                         x_train.append(img)
                         
                         train_count -= 1
                     else:
+                        
                         x_test.append(img)
                     
-
             return np.array(x_train), np.array(x_train), np.array(x_test), np.array(x_test)
 
         
