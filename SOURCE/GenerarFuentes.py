@@ -57,7 +57,7 @@ class DatasetLetters:
         """
         return self.fonts
     def generate_data(self):
-        for number in range(0, 7):
+        for number in range(0, 10):
             for letra in list(string.ascii_lowercase):
                 
                 for i in range(len(self.fonts)):
@@ -131,9 +131,9 @@ class DatasetLetters:
             data_count = len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
             train_count = int(data_count * train_percent)
             
-            for j in range(0,7):
+            for j in range(0,10):
     			# Get unique selection for each images.
-                random_selection = random.sample(range(round(data_count/7)), round(data_count/7))
+                random_selection = random.sample(range(round(data_count/10)), round(data_count/10))
                 
                 for i in random_selection:
                     path = folder + str(i) + "_" + str(j) +".png"
