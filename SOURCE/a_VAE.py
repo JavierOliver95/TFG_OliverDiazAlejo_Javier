@@ -20,7 +20,7 @@ batch_size = 100
 original_dim = 784
 latent_dim = 2
 intermediate_dim = 256
-epochs = 50
+epochs = 2000
 epsilon_std = 1.0
 img_width, img_height = 28, 28
 train_data_dir = 'letras_fuente/a/train'
@@ -146,7 +146,7 @@ for i, yi in enumerate(grid_x):
         x_decoded = generator.predict(z_sample)
         digit = x_decoded[0].reshape(digit_size, digit_size)
         figure[i * digit_size: (i + 1) * digit_size,
-               j * digit_size: (j + 1) * digit_size] = digit
+               j * digit_size: (j + 1) * digit_size] = (float) digit
 
 plt.figure(figsize=(10, 10))
 plt.imshow(figure, cmap='Greys_r')

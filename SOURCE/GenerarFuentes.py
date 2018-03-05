@@ -14,6 +14,7 @@ import string
 
 class DatasetLetters:
     fonts = []
+    prohibidas = [4,5,13,45,46,48,63,68,75,113,131,141,143,184,191,192,197,203,205,207,213,252,268,326,340,353,367,402,411,419,500,517,519,523,525,528,530,592,610,618,637,641,647,663,672]
     def __init__(self):
         random.seed()
         self.fonts = self.load_fonts()
@@ -28,10 +29,10 @@ class DatasetLetters:
         #fonts = [matplotlib.font_manager.FontProperties(fname=fname).get_file() for fname in flist]
         for fname in flist:
             self.fonts.append(matplotlib.font_manager.FontProperties(fname=fname).get_file())
-        
+            
         
     		# Using only selected fonts
-        """
+        """ 
     		fonts = [
     			'C:/Windows/Fonts/AGENCYR.TTF',
     			'C:/Windows/Fonts/AGARAMONDPRO-BOLD.OTF',
@@ -63,7 +64,7 @@ class DatasetLetters:
                 for i in range(len(self.fonts)):
                     
                     #fuenteB = fuente.split("\\")[1]
-                
+                    
                     im = Image.new("RGBA",(28,28))
                     
                     draw = ImageDraw.Draw(im)
@@ -83,8 +84,8 @@ class DatasetLetters:
                         if not os.path.exists("letras_fuente/" + letra):
                             os.mkdir("letras_fuente/" + letra)
                             
-                    
-                    im.save(path+"/" + str(i) +"_" + str(number) + ".png")
+                    if not(i in self.prohibidas):
+                        im.save(path+"/" + str(i) +"_" + str(number) + ".png")
                     
                     
                         
@@ -114,8 +115,8 @@ class DatasetLetters:
                         if not os.path.exists("letras_fuente/" + letra + "_UPPER_"):
                             os.mkdir("letras_fuente/" + letra + "_UPPER_")
 
-                    
-                    im.save(path + "/"+  str(i) +"_" + str(number) + ".png")
+                    if not(i in self.prohibidas):
+                        im.save(path + "/"+  str(i) +"_" + str(number) + ".png")
                     
 		
 
@@ -133,19 +134,19 @@ class DatasetLetters:
             
             for j in range(0,10):
     			# Get unique selection for each images.
-                random_selection = random.sample(range(round(data_count/10)), round(data_count/10))
                 
-                for i in random_selection:
+                for i in range(len(self.fonts)):
                     path = folder + str(i) + "_" + str(j) +".png"
-                    img = misc.imread(path, mode="L") # / 255
-                    if train_count > 0:
-                        x_train.append(img)
+                    if not(i in self.prohibidas):
+                        img = misc.imread(path, mode="L") # / 255
+                        if j < 8:
+                            x_train.append(img)
+                            
+                            train_count -= 1
+                        else:
+                            
+                            x_test.append(img)
                         
-                        train_count -= 1
-                    else:
-                        
-                        x_test.append(img)
-                    
             return np.array(x_train), np.array(x_train), np.array(x_test), np.array(x_test)
 
         

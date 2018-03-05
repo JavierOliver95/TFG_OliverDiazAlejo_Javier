@@ -9,4 +9,4 @@ import GenerarFuentes
 dataset = GenerarFuentes.DatasetLetters()
 
 
-dataset.generate_data() 
+#dataset.generate_data() 
