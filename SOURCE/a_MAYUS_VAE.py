@@ -4,23 +4,25 @@ Created on Mon Nov 20 17:54:02 2017
 
 @author: JAVIER OLIVER ASUS
 """
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
-
+import GenerarFuentes
+from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Input, Dense, Lambda, Layer
 from keras.models import Model
 from keras import backend as K
 from keras import metrics
 from keras.datasets import mnist
 
-batch_size = 100
+batch_size = 200
 original_dim = 784
 latent_dim = 2
 intermediate_dim = 256
-epochs = 50
+epochs = 1500
 epsilon_std = 1.0
+img_width, img_height = 28, 28
 
 
 x = Input(shape=(original_dim,))
@@ -45,6 +47,7 @@ h_decoded = decoder_h(z)
 x_decoded_mean = decoder_mean(h_decoded)
 
 
+"""
 # Custom loss layer
 class CustomVariationalLayer(Layer):
     def __init__(self, **kwargs):
@@ -67,10 +70,25 @@ class CustomVariationalLayer(Layer):
 y = CustomVariationalLayer()([x, x_decoded_mean])
 vae = Model(x, y)
 vae.compile(optimizer='rmsprop', loss=None)
+"""
 
+vae = Model(x, x_decoded_mean)
+
+xent_loss = original_dim * metrics.binary_crossentropy(x, x_decoded_mean)
+kl_loss = - 0.5 * K.sum(1 + z_log_var - K.square(z_mean) - K.exp(z_log_var), axis=-1)
+vae_loss = K.mean(xent_loss + kl_loss)
+
+vae.add_loss(vae_loss)
+vae.compile(optimizer='rmsprop', loss=None)
+vae.summary()
+
+dataset = GenerarFuentes.DatasetLetters()
 
 # train the VAE on MNIST digits
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+x_train, y_train, x_test, y_test =dataset.load_data(folder="letras_fuente/A_UPPER_/")
+
+
 
 x_train = x_train.astype('float32') / 255.
 x_test = x_test.astype('float32') / 255.
@@ -81,7 +99,7 @@ vae.fit(x_train,
         shuffle=True,
         epochs=epochs,
         batch_size=batch_size,
-        validation_data=(x_test, None))
+        validation_data=(x_test,None))
 
 # build a model to project inputs on the latent space
 encoder = Model(x, z_mean)
@@ -103,6 +121,18 @@ figure = np.zeros((digit_size * n, digit_size * n))
 # to produce values of the latent variables z, since the prior of the latent space is Gaussian
 grid_x = norm.ppf(np.linspace(0.05, 0.95, n))
 grid_y = norm.ppf(np.linspace(0.05, 0.95, n))
+
+for i, yi in enumerate(grid_x):
+    for j, xi in enumerate(grid_y):
+        z_sample = np.array([[xi, yi]])
+        x_decoded = generator.predict(z_sample)
+        digit = x_decoded[0].reshape(digit_size, digit_size)
+        figure[i * digit_size: (i + 1) * digit_size,
+               j * digit_size: (j + 1) * digit_size] = digit
+
+plt.figure(figsize=(10, 10))
+plt.imshow(figure, cmap='Greys_r')
+plt.show()
 
 
 

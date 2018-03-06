@@ -16,15 +16,13 @@ from keras import backend as K
 from keras import metrics
 from keras.datasets import mnist
 
-batch_size = 100
+batch_size = 200
 original_dim = 784
 latent_dim = 2
 intermediate_dim = 256
-epochs = 2000
+epochs = 1500
 epsilon_std = 1.0
 img_width, img_height = 28, 28
-train_data_dir = 'letras_fuente/a/train'
-validation_data_dir = 'letras_fuente/a/validation'
 
 
 x = Input(shape=(original_dim,))
@@ -47,7 +45,7 @@ decoder_h = Dense(intermediate_dim, activation='relu')
 decoder_mean = Dense(original_dim, activation='sigmoid')
 h_decoded = decoder_h(z)
 x_decoded_mean = decoder_mean(h_decoded)
-
+"""
 # Custom loss layer
 class CustomVariationalLayer(Layer):
     def __init__(self, **kwargs):
@@ -70,7 +68,17 @@ class CustomVariationalLayer(Layer):
 y = CustomVariationalLayer()([x, x_decoded_mean])
 vae = Model(x, y)
 vae.compile(optimizer='rmsprop', loss=None)
+"""
 
+vae = Model(x, x_decoded_mean)
+
+xent_loss = original_dim * metrics.binary_crossentropy(x, x_decoded_mean)
+kl_loss = - 0.5 * K.sum(1 + z_log_var - K.square(z_mean) - K.exp(z_log_var), axis=-1)
+vae_loss = K.mean(xent_loss + kl_loss)
+
+vae.add_loss(vae_loss)
+vae.compile(optimizer='rmsprop', loss=None)
+vae.summary()
 
 dataset = GenerarFuentes.DatasetLetters()
 
@@ -146,7 +154,7 @@ for i, yi in enumerate(grid_x):
         x_decoded = generator.predict(z_sample)
         digit = x_decoded[0].reshape(digit_size, digit_size)
         figure[i * digit_size: (i + 1) * digit_size,
-               j * digit_size: (j + 1) * digit_size] = (float) digit
+               j * digit_size: (j + 1) * digit_size] = digit
 
 plt.figure(figsize=(10, 10))
 plt.imshow(figure, cmap='Greys_r')
