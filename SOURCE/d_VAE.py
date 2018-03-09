@@ -16,13 +16,13 @@ from keras import backend as K
 from keras import metrics
 from keras.datasets import mnist
 
-CARPETA="letras_fuente/a/"
-MODELO="modelo_a_minus"
+CARPETA="letras_fuente/d/"
+MODELO="modelo_d_minus"
 batch_size = 200
 original_dim = 784
 latent_dim = 2
 intermediate_dim = 256
-epochs = 1500
+epochs = 1900
 epsilon_std = 1.0
 img_width, img_height = 28, 28
 

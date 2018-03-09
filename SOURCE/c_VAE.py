@@ -16,8 +16,8 @@ from keras import backend as K
 from keras import metrics
 from keras.datasets import mnist
 
-CARPETA="letras_fuente/a/"
-MODELO="modelo_a_minus"
+CARPETA="letras_fuente/c/"
+MODELO="modelo_c_minus"
 batch_size = 200
 original_dim = 784
 latent_dim = 2
