@@ -16,6 +16,7 @@ class DatasetLetters:
     fonts = []
     prohibidas = [4,5,13,45,46,48,63,68,75,113,131,141,143,184,191,192,197,203,205,207,213,252,268,326,340,353,367,402,411,419,500,517,519,523,525,528,530,592,610,618,637,641,647,663,672]
     def __init__(self):
+        self.fonts = []
         random.seed()
         self.fonts = self.load_fonts()
         
@@ -122,7 +123,7 @@ class DatasetLetters:
 
     def load_data(self, folder='test-set-519', train_percent = 0.8):
     
-
+            print("NUMERO DE DATOS!!! " + str(len(self.fonts)))
             x_train = []
             
 
@@ -146,6 +147,8 @@ class DatasetLetters:
                         else:
                             
                             x_test.append(img)
+                            
+                i=0
                         
             return np.array(x_train), np.array(x_train), np.array(x_test), np.array(x_test)
 
