@@ -17,10 +17,14 @@ from keras.models import load_model
 from keras import backend as K
 from keras import metrics
 from keras.datasets import mnist
+from bson.binary import Binary
+import pickle
+import pymongo
 
 class Generador:
     letrasMinus = []
-
+    MongoCliente=""
+    bbdd = ""
     letrasMayus = []
     
     MODELO="Modelos/modelo_"
@@ -42,6 +46,8 @@ class Generador:
     grid_y = norm.ppf(np.linspace(0.05, 0.95, n))
     
     def __init__(self):
+        self.MongoCliente = pymongo.MongoClient()
+        self.bbdd = self.MongoCliente["VAE_FUENTES"]
         for letra in list(string.ascii_lowercase):
             MODELFIN=self.MODELO+letra+self.MODELO1
             generator = load_model(MODELFIN)
@@ -52,12 +58,42 @@ class Generador:
             generator = load_model(MODELFIN2)
             self.letrasMayus.append(generator)
     
-    def generarFuente(self):
+    def guardarFuente(self, fuente, idFuente, idUser=None):
+        self.MongoCliente = pymongo.MongoClient()
+        self.bbdd = self.MongoCliente["VAE_FUENTES"]
+        fuenteCod = Binary(pickle.dumps( fuente, protocol=2))
+        collection = self.bbdd['fuentes']
+        if idUser==None:
+           result = collection.insert_one({"IDFuente":idFuente,"arrayFuente":fuenteCod, "idUser":""})
+        else:
+           result = collection.insert_one({"IDFuente":idFuente,"arrayFuente":fuenteCod, "idUser":idUser})
+
+        return result
+    
+    def getFuente(self,nombre):
+        self.MongoCliente = pymongo.MongoClient()
+        self.bbdd = self.MongoCliente["VAE_FUENTES"]
+        collection = self.bbdd['fuentes']
+        fuenteCod = collection.find_one({"IDFuente":nombre})
+        fuente = pickle.loads(fuenteCod["arrayFuente"])
+    
+        return fuente
+    
+        
+    def borrarFuente(self,nombre):
+        self.MongoCliente = pymongo.MongoClient()
+        self.bbdd = self.MongoCliente["VAE_FUENTES"]
+        collection = self.bbdd['fuentes']
+        result = collection.delete_one({"IDFuente":nombre})
+        
+        return result
+    
+    def generarFuente(self, x, y):
         cadena="abcdefghijklmnopqrstuvwxyz"
         digit_size = self.digit_size
         
-        x_sel = random.choice(list(enumerate(self.grid_x)))[1]
-        y_sel = random.choice(list(enumerate(self.grid_y)))[1]
+        x_sel = x
+        y_sel = y
         
         figure = np.zeros((digit_size * 2, digit_size * len(cadena)))
         
@@ -89,12 +125,8 @@ class Generador:
             
         return figure
         
-    #def pedirFuente(self, nombre):
-        #AQUI ENTRARIAMOS A LA BBDD Y DEVOLVERAMOS LA IMAGEN CON LA FUENTE
-        
-    #def guardarFuente(self, nombre):
-    def escribirFuenteNueva(self, texto):
-        fuente = self.generarFuente()
+    def escribirFuenteNueva(self, texto, x, y):
+        fuente = self.generarFuente(x, y)
         digit_size = self.digit_size
         
         x_dib=0
@@ -131,12 +163,53 @@ class Generador:
                 y_dib=0
                 x_dib+=1
         
-        plt.figure(figsize=(10, 10))
-        plt.imshow(figure, cmap='Greys_r')
-        plt.show()
-    #def escribirFuente(self, nombre, texto):
-    
+        return figure
 
+    def EscribirFuente(self, texto, idFuente):
+        digit_size = self.digit_size
+        self.MongoCliente = pymongo.MongoClient()
+        self.bbdd = self.MongoCliente["VAE_FUENTES"]
+        collection=self.bbdd["fuentes"]
+        fuenteCod = collection.find_one({"IDFuente":idFuente})
+        fuente = pickle.loads(fuenteCod)
+        
+        x_dib=0
+        y_dib=0
+        
+        lineas = int(len(texto)/50) + texto.count('\n') +1
+        if (len(texto)>50):
+            columnas = 50
+        else:
+            columnas = len(texto)
+        figure = np.zeros((digit_size * lineas, digit_size * columnas))
+        
+        for s in texto:
+            if s=="ñ":
+                s="n"
+            if s.isalnum():
+                if s.islower():
+                    index=0
+                    index_letra=string.ascii_lowercase.index(s)
+                elif s.isupper():
+                    index=1
+                    index_letra=string.ascii_uppercase.index(s)
+                    
+                digit=fuente[index * digit_size: (index + 1) * digit_size,
+                             index_letra * digit_size: (index_letra + 1) * digit_size]
+                
+
+                figure[x_dib * digit_size: (x_dib + 1) * digit_size,
+                       y_dib * digit_size: (y_dib + 1) * digit_size]=digit
+
+                
+            y_dib+=1
+            if (y_dib>255 or s=='\n'):
+                y_dib=0
+                x_dib+=1
+        
+        return figure
+
+    
         
     
     
