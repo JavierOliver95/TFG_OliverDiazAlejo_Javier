@@ -171,7 +171,7 @@ class Generador:
         self.bbdd = self.MongoCliente["VAE_FUENTES"]
         collection=self.bbdd["fuentes"]
         fuenteCod = collection.find_one({"IDFuente":idFuente})
-        fuente = pickle.loads(fuenteCod)
+        fuente = pickle.loads(fuenteCod["arrayFuente"])
         
         x_dib=0
         y_dib=0

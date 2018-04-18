@@ -48,6 +48,16 @@ def signIn(user,password):
         
         return jsonify({'status': 'successful'})
 
+@app.route('/pass/<user>/<password>/<newpass>')
+def modificarCUenta(user,password,newpass):
+    client = pymongo.MongoClient()
+    bbdd = client["VAE_FUENTES"]
+    usuarios = bbdd['usuarios']
+    
+    usuarios.find_one_and_update({ "ID": user, "pass":password }, { "$set" :{ "pass": newpass }})
+    return jsonify({'status': 'successful'})
+
+
 @app.route('/del/<user>')
 def borrarCuenta(user):
     client = pymongo.MongoClient()
@@ -126,8 +136,29 @@ def escribirFuente(tex,name):
     
     return jsonify({'fuente': img_str.decode('utf-8')})
 
+@app.route('/generales')
+@app.route('/generales/<usuario>')
+def getFuentes(usuario=""):
+    listaF = []
+    client = pymongo.MongoClient()
+    bbdd = client["VAE_FUENTES"]
+    collection = bbdd['fuentes']
+    
+    res = collection.find({"idUser":usuario})
+    
+    for i in res:
+        fuentePy = generador.EscribirFuente(i["IDFuente"],i["IDFuente"])
+        
+        buffered = BytesIO()
+        scipy.misc.imsave(buffered, fuentePy, format="png") 
+
+        img_str = base64.b64encode(buffered.getvalue())
+        
+        listaF.append({"fuente":img_str.decode('utf-8'),"name": i["IDFuente"]})
+        
+    return jsonify({"fuentesG":listaF})
 
 
 if __name__ == '__main__':
     generador=Generador()
-    app.run()
+    app.run(host='0.0.0.0')

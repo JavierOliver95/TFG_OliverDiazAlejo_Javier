@@ -20,12 +20,10 @@ client = pymongo.MongoClient()
 
 db = client["VAE_FUENTES"]
 
-collection = db['usuarios']
+usuarios = db['usuarios']
 
-res = collection.find({"ID":"Barbassss"})
+res = usuarios.find_one_and_update({ "ID": "Barbassss" }, { "$set" :{ "pass": '12345' }})
 
-for i in res:
-    print(i["ID"])
 """
 amigo = Generador()
 
