@@ -158,7 +158,6 @@ def getFuentes(usuario=""):
         
     return jsonify({"fuentesG":listaF})
 
-
 if __name__ == '__main__':
     generador=Generador()
     app.run(host='0.0.0.0')

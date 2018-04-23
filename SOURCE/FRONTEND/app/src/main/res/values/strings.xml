@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FrontEnd_Android</string>
+    <string name="registro">Si no tienes un usuario puedes crearlo aqui</string>
+    <string name="regstrarse">Sign In</string>
+    <string name="Logear">Log In</string>
+    <string name="usuario">User</string>
+    <string name="contraseña">Password</string>
+    <string name="menu1">Crear Fuente</string>
+    <string name="menu2">Ver Fuentes</string>
+    <string name="menu3">Borrar Fuente</string>
+    <string name="menu4">Escribir Texto</string>
+    <string name="menuCxt1">Cambiar contraseña</string>
+    <string name="menuCxt2">Cerrar sesion</string>
+    <string name="menuCxt3">Borrar cuenta</string>
+    <string name="menuCxt4">Salir</string>
+    <string name="genParam1">Primer parametro</string>
+    <string name="genParam2">Segundo parametro</string>
+    <string name="generarFont">Crear Fuente</string>
+    <string name="borrasel">Selecciona fuente a borrar</string>
+    <string name="borrarFont">Borrar Fuente</string>
+    <string name="GuardarText">Guardar en PDF</string>
+    <string name="Transcribir">Transcribir texto</string>
+    <string name="fuenteTrans">Usar fuente ya creada</string>
+    <string name="fuenteTransNew">Usar fuente nueva</string>
+</resources>

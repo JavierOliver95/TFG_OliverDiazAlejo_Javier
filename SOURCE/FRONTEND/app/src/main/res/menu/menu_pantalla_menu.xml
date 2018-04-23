@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_rv_a"
+        android:title="@string/menuCxt1" />
+    <item
+        android:id="@+id/menu_rv_b"
+        android:title="@string/menuCxt2" />
+    <item
+        android:id="@+id/menu_rv_c"
+        android:title="@string/menuCxt3" />
+    <item android:id="@+id/menu_rv_d"
+        android:title="@string/menuCxt4" />
+</menu>
