@@ -5,7 +5,10 @@
     android:background="@color/blanco"
     android:weightSum="10">
 
-
+<RadioGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="4">
     <RadioButton
         android:id="@+id/radioButton3"
         android:layout_width="match_parent"
@@ -18,7 +21,8 @@
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="2"
+        android:background="@color/negro"/>
 
     <RadioButton
         android:id="@+id/radioButton4"
@@ -40,8 +44,9 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/negro"
         android:layout_weight="1"
-        android:max="10"
+        android:max="100"
         android:progress="3" />
 
     <TextView
@@ -57,11 +62,12 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/negro"
         android:layout_weight="1"
-        android:max="10"
+        android:max="100"
         android:progress="3" />
 
-
+</RadioGroup>
     <View
         android:id="@+id/divider3"
         android:layout_width="match_parent"
@@ -75,8 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="20"
-        android:textSize="11sp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean iaculis feugiat mi, vel ultricies metus convallis non. Mauris vestibulum lacinia lacus, id dapibus nisi placerat sit amet. Sed lobortis ligula est, at sollicitudin turpis pharetra non. Nulla velit augue, viverra accumsan nisl nec, tincidunt tempor risus. Proin et nibh quis sapien rutrum sodales. In ex ex, iaculis in egestas eu, vestibulum vitae elit. Cras non aliquet augue. Praesent maximus ultrices ipsum, at gravida nisl facilisis sit amet. Integer sed efficitur mi, ac molestie diam."
+        android:text="Lorem ipsum dolor sit amet"
         android:textColor="@color/negro"
         android:layout_weight="4"/>
 

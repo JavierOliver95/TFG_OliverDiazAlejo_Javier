@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tfg.oliver.javier.frontend_android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Visualizacion.Menu_principal"></activity>
+        <activity android:name=".Visualizacion.Menu_principal" />
+        <activity android:name=".Visualizacion.Crear_fuentes" />
+        <activity android:name=".Visualizacion.Borrar_fuentes" />
+        <activity android:name=".Visualizacion.Escribir"></activity>
+        <activity android:name=".Visualizacion.VerFuentes"></activity>
     </application>
 
 </manifest>

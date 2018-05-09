@@ -68,6 +68,7 @@ class Generador:
         else:
            result = collection.insert_one({"IDFuente":idFuente,"arrayFuente":fuenteCod, "idUser":idUser})
 
+        self.MongoCliente.close()
         return result
     
     def getFuente(self,nombre):
@@ -77,6 +78,8 @@ class Generador:
         fuenteCod = collection.find_one({"IDFuente":nombre})
         fuente = pickle.loads(fuenteCod["arrayFuente"])
     
+        self.MongoCliente.close()
+    
         return fuente
     
         
@@ -85,6 +88,8 @@ class Generador:
         self.bbdd = self.MongoCliente["VAE_FUENTES"]
         collection = self.bbdd['fuentes']
         result = collection.delete_one({"IDFuente":nombre})
+        
+        self.MongoCliente.close()
         
         return result
     
@@ -206,6 +211,8 @@ class Generador:
             if (y_dib>255 or s=='\n'):
                 y_dib=0
                 x_dib+=1
+        
+        self.MongoCliente.close()
         
         return figure
 

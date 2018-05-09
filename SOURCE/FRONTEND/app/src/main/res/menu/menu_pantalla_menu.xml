@@ -10,5 +10,7 @@
         android:id="@+id/menu_rv_c"
         android:title="@string/menuCxt3" />
     <item android:id="@+id/menu_rv_d"
+        android:title="@string/menuCxt5" />
+    <item android:id="@+id/menu_rv_e"
         android:title="@string/menuCxt4" />
 </menu>
