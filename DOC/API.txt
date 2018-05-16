@@ -1,0 +1,21 @@
+GENERADOR FUENTES
+Funciones:
+- Generar Fuente ()
+- Guardar Fuente (nombre)
+- Ver Fuente (nombre)
+- Borrar Fuente (Nombre)
+- Escribir fuente nueva (texto)
+- Escribir con fuente (nombre, texto)
+
+API REST
+Funciones anteriores +:
+- Login
+- LogOut
+- Sign in
+
+TABLAS BBDD
+
+Usuarios (ID, PASS, NOMBRE, APELLIDOS)
+Fuentes (NOMBRE, IMAGEN FUENTE, USUARIO ID)
+
+ 
