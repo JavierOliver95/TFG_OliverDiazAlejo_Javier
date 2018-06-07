@@ -2,8 +2,10 @@ package tfg.oliver.javier.frontend_android.Visualizacion;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncStatusObserver;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     final String SiteKey = "6LdaU1UUAAAAAGLFtD0LLPj-oTMyq-KELwPbKUMI";
     final String SecretKey  = "6LdaU1UUAAAAAM-2jMXT8TOUdzxWgzvUcaLJFIoQ";
-
+    private SharedPreferences pref;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -44,10 +46,17 @@ public class MainActivity extends AppCompatActivity {
         Button login = (Button) findViewById(R.id.button2);
         Button signin = findViewById(R.id.button);
 
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        campoIp.setText(pref.getString("UltimaIP",""));
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Sesion.setIP(campoIp.getText().toString());
+
+
+                pref.edit().putString("UltimaIP",campoIp.getText().toString()).apply();
 
                 Sesion.setUser(new Usuario(nUser.getText().toString()));
 
@@ -71,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,R.string.Servidor,Toast.LENGTH_SHORT).show();
                 }else {
                     Sesion.setIP(campoIp.getText().toString());
+
+
 
 
                     final Dialog dialogo = new Dialog(MainActivity.this, R.style.Theme_AppCompat_Dialog);

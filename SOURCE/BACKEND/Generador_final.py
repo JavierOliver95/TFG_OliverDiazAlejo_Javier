@@ -38,7 +38,7 @@ class Generador:
     
     n = 1000  # figure with 15x15 digits
     
-    digit_size = 28
+    digit_size = 50
     
     # linearly spaced coordinates on the unit square were transformed through the inverse CDF (ppf) of the Gaussian
     # to produce values of the latent variables z, since the prior of the latent space is Gaussian
@@ -208,7 +208,7 @@ class Generador:
 
                 
             y_dib+=1
-            if (y_dib>255 or s=='\n'):
+            if (y_dib>(columnas-1) or s=='\n'):
                 y_dib=0
                 x_dib+=1
         

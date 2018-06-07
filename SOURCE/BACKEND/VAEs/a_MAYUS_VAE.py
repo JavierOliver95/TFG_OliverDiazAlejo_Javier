@@ -19,16 +19,17 @@ from keras.datasets import mnist
 from PIL import Image
 from scipy.misc import imsave
 
-for letra in list(string.ascii_uppercase):
-    CARPETA="letras_fuente/"+ letra+"_UPPER_/"
-    MODELO="modelo_"+letra+"_mayus"
-    batch_size = 200
-    original_dim = 784
+for letra in ["r"]:
+    CARPETA="letras_fuente/"+ letra+"/"
+    
+    MODELO="modelo_"+letra+"_minus"
+    batch_size =130
+    original_dim = 2500
     latent_dim = 2
-    intermediate_dim = 256
-    epochs = 1800
+    intermediate_dim = 512
+    epochs = 520
     epsilon_std = 1.0
-    img_width, img_height = 28, 28
+    img_width, img_height = 50, 50
     
     
     x = Input(shape=(original_dim,))
@@ -121,13 +122,13 @@ for letra in list(string.ascii_uppercase):
     
     # display a 2D manifold of the digits
     n = 15  # figure with 15x15 digits
-    digit_size = 28
+    digit_size = 50
     figure = np.zeros((digit_size * n, digit_size * n))
     # linearly spaced coordinates on the unit square were transformed through the inverse CDF (ppf) of the Gaussian
     # to produce values of the latent variables z, since the prior of the latent space is Gaussian
     grid_x = norm.ppf(np.linspace(0.05, 0.95, n))
     grid_y = norm.ppf(np.linspace(0.05, 0.95, n))
-    
+ 
     for i, yi in enumerate(grid_x):
         for j, xi in enumerate(grid_y):
             z_sample = np.array([[xi, yi]])
@@ -135,7 +136,7 @@ for letra in list(string.ascii_uppercase):
             digit = x_decoded[0].reshape(digit_size, digit_size)
             figure[i * digit_size: (i + 1) * digit_size,
                    j * digit_size: (j + 1) * digit_size] = digit
-    
+        
     
     generator.save(MODELO)
     imsave(MODELO+".png",figure)
