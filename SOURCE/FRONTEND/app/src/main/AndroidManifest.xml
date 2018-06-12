@@ -12,18 +12,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-        <activity android:name=".Visualizacion.MainActivity">
+        <activity android:name=".Visualizacion.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Visualizacion.Menu_principal" />
-        <activity android:name=".Visualizacion.Crear_fuentes" />
-        <activity android:name=".Visualizacion.Borrar_fuentes" />
-        <activity android:name=".Visualizacion.Escribir"></activity>
-        <activity android:name=".Visualizacion.VerFuentes"></activity>
+        <activity android:name=".Visualizacion.Menu_principal"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Visualizacion.Crear_fuentes"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Visualizacion.Borrar_fuentes"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Visualizacion.Escribir"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".Visualizacion.VerFuentes"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
