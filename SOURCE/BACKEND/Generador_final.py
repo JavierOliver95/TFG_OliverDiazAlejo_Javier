@@ -164,7 +164,7 @@ class Generador:
 
                 
             y_dib+=1
-            if (y_dib>255 or s=='\n'):
+            if (y_dib>(columnas-1) or s=='\n'):
                 y_dib=0
                 x_dib+=1
         
